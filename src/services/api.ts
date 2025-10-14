@@ -1,6 +1,6 @@
 import type { Client } from '../types/Client';
 
-const API_BASE_URL = 'https://boasorte.teddybackoffice.com.br';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://boasorte.teddybackoffice.com.br';
 
 interface ApiUser {
   id: string;
