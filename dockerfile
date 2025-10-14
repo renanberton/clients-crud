@@ -1,18 +1,18 @@
-FROM node:18-alpine
+# Etapa 1: Build do React/Vite
+FROM node:18-alpine AS build
 WORKDIR /app
 
-# Copiar primeiros
 COPY package.json package-lock.json ./
 RUN npm ci
-
-# Copiar código
 COPY . .
-
-ENV VITE_API_URL=https://boasorte.teddybackoffice.com.br
-
-# Build
 RUN npm run build
 
-RUN npm install -g serve
+# Etapa 2: Servir com Nginx
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Configuração SPA: qualquer rota aponta para index.html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 3000
-CMD ["serve", "-s", "build", "-l", "3000", "--single"]
+CMD ["nginx", "-g", "daemon off;"]
