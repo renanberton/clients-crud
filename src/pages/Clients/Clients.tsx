@@ -3,8 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import type { Client } from '../../types/Client';
 import { Pagination } from '../../components/Pagination/Pagination';
 import { paginate } from '../../utils/pagination';
+import { DeleteConfirmationModal } from '../../components/DeleteConfirmationModal/DeleteConfirmationModal';
 import './style.scss';
-import Logo from '../../assets/logo.png';
+import Add from '../../assets/add.png';
+import Edit from '../../assets/edit.png';
+import Remove from '../../assets/remove.png';
+import { Header } from '../../components/Header/Header';
 
 interface ClientsProps {
   username: string;
@@ -18,13 +22,13 @@ interface ClientsProps {
 export const Clients: React.FC<ClientsProps> = ({
   username,
   clients,
-  selectedClients,
   onEditClient,
   onDeleteClient,
   onSelectClient,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const [itemsPerPage, setItemsPerPage] = useState(16); // Padrão de 16 cards
+  const [clientToDelete, setClientToDelete] = useState<Client | null>(null);
   const navigate = useNavigate();
 
   const { paginatedItems, paginationInfo } = paginate(
@@ -33,39 +37,54 @@ export const Clients: React.FC<ClientsProps> = ({
     itemsPerPage
   );
 
-  const handleBackToHome = () => {
-    navigate('/');
+  const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1); // Reset para primeira página quando mudar o número de itens
+  };
+
+  const handleDeleteClick = (client: Client) => {
+    setClientToDelete(client);
+  };
+
+  const handleConfirmDelete = () => {
+    if (clientToDelete) {
+      onDeleteClient(clientToDelete.id);
+      setClientToDelete(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setClientToDelete(null);
   };
 
   return (
     <div className="clients-page">
-      <header>
-        <div className="container">
-          <img src={Logo} alt="" />
-            <div className="header-tabs">
-              <Link to="/clients" >
-                Clientes
-              </Link>
-              <Link to="/selected-clients">
-                Clientes selecionados
-              </Link>
-              <Link to="/">
-                Sair
-              </Link>
-            </div>
-            <div className="header-right">
-                Olá, <strong>{username}!</strong>
-            </div>  
-          </div>              
-      </header>
-
+     <Header username={username} currentPage="clients" />
       <main className="clients-main">
         <div className="clients-section">
-          <div className="section-header">
-            <h2>Todos os Clientes</h2>
-            <Link to="/add-client" className="add-btn">
-              Novo Cliente
-            </Link>
+          <div className="list-controls">
+            <div className="records-count">
+              <p>
+              {clients.length === 0 ? 'Nenhum' : clients.length} 
+              {clients.length === 1 ? ' registro encontrado' : ' registros encontrados'}
+              </p>
+            </div>
+            <div className="items-per-page-selector">
+              <label htmlFor="itemsPerPage">Exibir: </label>
+              <select 
+                id="itemsPerPage"
+                value={itemsPerPage} 
+                onChange={handleItemsPerPageChange}
+                className="items-per-page-select"
+              >
+                <option value="8">8</option>
+                <option value="16">16</option>
+                <option value="24">24</option>
+                <option value="32">32</option>
+                <option value="48">48</option>
+              </select>
+              <span> por página</span>
+            </div>
           </div>
 
           <div className="clients-list">
@@ -79,7 +98,7 @@ export const Clients: React.FC<ClientsProps> = ({
                   <div className="client-info">
                     <h3>{client.name}</h3>
                     <p>Salário: R$ {client.salary.toLocaleString()}</p>
-                    <p>Valor da Empresa: R$ {client.companyValuation.toLocaleString()}</p>
+                    <p>Empresa: R$ {client.companyValuation.toLocaleString()}</p>
                   </div>
                   <div className="client-actions">
                     {!client.selected && (
@@ -88,7 +107,7 @@ export const Clients: React.FC<ClientsProps> = ({
                         className="select-btn"
                         title="Selecionar cliente"
                       >
-                        +
+                        <img src={Add} alt="Selecionar" />
                       </button>
                     )}
                     <button
@@ -98,18 +117,21 @@ export const Clients: React.FC<ClientsProps> = ({
                       }}
                       className="edit-btn"
                     >
-                      Editar
+                      <img src={Edit} alt="Editar" />
                     </button>
                     <button
-                      onClick={() => onDeleteClient(client.id)}
+                      onClick={() => handleDeleteClick(client)}
                       className="delete-btn"
                     >
-                      Remover
+                      <img src={Remove} alt="Remover" />
                     </button>
                   </div>
                 </div>
               ))
             )}
+              <Link to="/add-client" className="add-btn">
+              Criar Cliente
+            </Link>
           </div>
 
           {clients.length > 0 && (
@@ -120,6 +142,15 @@ export const Clients: React.FC<ClientsProps> = ({
           )}
         </div>
       </main>
+
+      {/* Modal de confirmação de exclusão */}
+      {clientToDelete && (
+        <DeleteConfirmationModal
+          clientName={clientToDelete.name}
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+        />
+      )}
     </div>
   );
 };
