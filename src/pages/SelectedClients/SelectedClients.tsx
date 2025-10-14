@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { Client } from '../../types/Client';
 import { Pagination } from '../../components/Pagination/Pagination';
 import { paginate } from '../../utils/pagination';
+import { Header } from '../../components/Header/Header';
 import './style.scss';
 
 interface SelectedClientsProps {
@@ -9,8 +10,6 @@ interface SelectedClientsProps {
   selectedClients: Client[];
   onUnselectClient: (id: string) => void;
   onClearSelected: () => void;
-  onNavigateToAll: () => void;
-  onBackToHome: () => void;
 }
 
 export const SelectedClients: React.FC<SelectedClientsProps> = ({
@@ -18,11 +17,9 @@ export const SelectedClients: React.FC<SelectedClientsProps> = ({
   selectedClients,
   onUnselectClient,
   onClearSelected,
-  onNavigateToAll,
-  onBackToHome
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const [itemsPerPage, setItemsPerPage] = useState(16);
 
   const { paginatedItems, paginationInfo } = paginate(
     selectedClients,
@@ -30,35 +27,40 @@ export const SelectedClients: React.FC<SelectedClientsProps> = ({
     itemsPerPage
   );
 
+  const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1);
+  };
+
   return (
     <div className="selected-clients-page">
-      <header className="selected-clients-header">
-        <div className="header-content">
-          <h1>Olá, {username}</h1>
-          <div className="header-actions">
-            <button 
-              onClick={onNavigateToAll}
-              className="all-clients-btn"
-            >
-              Todos os Clientes
-            </button>
-            <button 
-              onClick={onBackToHome}
-              className="back-btn"
-            >
-              Sair
-            </button>
-          </div>
-        </div>
-      </header>
-
+      <Header username={username} currentPage="selected-clients" />
+      
       <main className="selected-clients-main">
         <div className="selected-clients-section">
-          <div className="section-header">
-            <h2>Clientes Selecionados</h2>
-            <button onClick={onClearSelected} className="clear-btn">
-              Limpar Selecionados
-            </button>
+          <div className="list-controls">
+            <div className="records-count">
+              <p>
+                {selectedClients.length === 0 ? 'Nenhum' : selectedClients.length} 
+                {selectedClients.length === 1 ? ' cliente selecionado' : ' clientes selecionados'}
+              </p>
+            </div>
+            <div className="items-per-page-selector">
+              <label htmlFor="itemsPerPage">Exibir: </label>
+              <select 
+                id="itemsPerPage"
+                value={itemsPerPage} 
+                onChange={handleItemsPerPageChange}
+                className="items-per-page-select"
+              >
+                <option value="8">8</option>
+                <option value="16">16</option>
+                <option value="24">24</option>
+                <option value="32">32</option>
+                <option value="48">48</option>
+              </select>
+              <span> por página</span>
+            </div>
           </div>
 
           <div className="selected-clients-list">
@@ -72,9 +74,9 @@ export const SelectedClients: React.FC<SelectedClientsProps> = ({
                   <div className="client-info">
                     <h3>{client.name}</h3>
                     <p>Salário: R$ {client.salary.toLocaleString()}</p>
-                    <p>Valor da Empresa: R$ {client.companyValuation.toLocaleString()}</p>
+                    <p>Empresa: R$ {client.companyValuation.toLocaleString()}</p>
                   </div>
-                  <div className="client-actions">
+                  <div className="client-actions-selected">
                     <button
                       onClick={() => onUnselectClient(client.id)}
                       className="unselect-btn"
@@ -89,10 +91,17 @@ export const SelectedClients: React.FC<SelectedClientsProps> = ({
           </div>
 
           {selectedClients.length > 0 && (
-            <Pagination
-              paginationInfo={paginationInfo}
-              onPageChange={setCurrentPage}
-            />
+            <>
+              <div className="clear-section">
+                <button onClick={onClearSelected} className="clear-btn">
+                  Limpar Selecionados
+                </button>
+              </div>
+              <Pagination
+                paginationInfo={paginationInfo}
+                onPageChange={setCurrentPage}
+              />
+            </>
           )}
         </div>
       </main>
