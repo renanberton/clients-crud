@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './style.scss';
 
 interface HomeProps {
@@ -7,16 +8,19 @@ interface HomeProps {
 
 export const Home: React.FC<HomeProps> = ({ onUsernameSubmit }) => {
   const [username, setUsername] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (username.trim()) {
       onUsernameSubmit(username.trim());
+      navigate('/clients');
     }
   };
 
   return (
     <div className="home-container">
+      <div className="home-card">
         <h1 className="home-title">
           Olá, seja bem-vindo!
         </h1>
@@ -34,6 +38,7 @@ export const Home: React.FC<HomeProps> = ({ onUsernameSubmit }) => {
           </button>
         </form>
       </div>
+    </div>
   );
 };
 
