@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import { Clients } from './pages/Clients/Clients';
@@ -7,6 +6,7 @@ import { ClientForm } from './components/ClientForm/ClientForm';
 import { useClients } from './hooks/useClients';
 import type { Client } from './types/Client';
 import './App.css';
+import { useState } from 'react';
 
 function App() {
   const [username, setUsername] = useState('');
@@ -82,11 +82,8 @@ function App() {
                 username={username}
                 selectedClients={selectedClients}
                 onUnselectClient={unselectClient}
-                onClearSelected={clearSelected} onNavigateToAll={function (): void {
-                  throw new Error('Function not implemented.');
-                } } onBackToHome={function (): void {
-                  throw new Error('Function not implemented.');
-                } }              />
+                onClearSelected={clearSelected} 
+                />
             ) : (
               <Navigate to="/" replace />
             )
