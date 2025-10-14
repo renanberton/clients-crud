@@ -3,8 +3,6 @@ WORKDIR /app
 
 # Copiar arquivos de configuração
 COPY package.json package-lock.json ./
-COPY .env ./
-
 RUN npm ci
 COPY . .
 RUN npm run build
