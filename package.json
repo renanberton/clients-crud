@@ -1,6 +1,7 @@
 {
   "name": "client-crud",
   "private": true,
+  "proxy": "https://boasorte.teddybackoffice.com.br",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
