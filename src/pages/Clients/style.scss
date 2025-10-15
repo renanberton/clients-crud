@@ -258,7 +258,7 @@ header {
   background-color: transparent;
 }
 
-.recors-count {
+.records-count {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -267,7 +267,17 @@ header {
     font-weight: normal;
     font-style: 400;
     margin-bottom: 18px;
-    text-align: center;
+    text-align: center; 
+
+    p {
+      margin: 0.25rem 0;
+      font-family: "Inter", sans-serif;
+      font-size: 18px;  
+      font-weight: normal;
+      font-style: 700;
+      margin-bottom: 14px;
+      text-align: center;
+    }
 }
 
 .items-per-page-selector {

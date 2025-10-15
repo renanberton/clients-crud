@@ -65,8 +65,8 @@ export const Clients: React.FC<ClientsProps> = ({
           <div className="list-controls">
             <div className="records-count">
               <p>
-              {clients.length === 0 ? 'Nenhum' : clients.length} 
-              {clients.length === 1 ? ' registro encontrado' : ' registros encontrados'}
+                {clients.length === 0 ? 'Nenhum' : <strong>{clients.length}</strong>} 
+                {clients.length === 1 ? ' registro encontrado' : ' registros encontrados'}
               </p>
             </div>
             <div className="items-per-page-selector">
