@@ -4,6 +4,7 @@ import { Pagination } from '../../components/Pagination/Pagination';
 import { paginate } from '../../utils/pagination';
 import { Header } from '../../components/Header/Header';
 import './style.scss';
+import RemoveSelected from '../../assets/remove-selected.png';
 
 interface SelectedClientsProps {
   username: string;
@@ -26,64 +27,31 @@ export const SelectedClients: React.FC<SelectedClientsProps> = ({
     currentPage,
     itemsPerPage
   );
-
-  const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setItemsPerPage(Number(e.target.value));
-    setCurrentPage(1);
-  };
+  
+  const hasManyCards = paginatedItems.length >= 4;
 
   return (
-    <div className="selected-clients-page">
-      <Header username={username} currentPage="selected-clients" />
-      
-      <main className="selected-clients-main">
-        <div className="selected-clients-section">
-          <div className="list-controls">
-            <div className="records-count">
-              <p>
-                {selectedClients.length === 0 ? 'Nenhum' : selectedClients.length} 
-                {selectedClients.length === 1 ? ' cliente selecionado' : ' clientes selecionados'}
-              </p>
-            </div>
-            <div className="items-per-page-selector">
-              <label htmlFor="itemsPerPage">Exibir: </label>
-              <select 
-                id="itemsPerPage"
-                value={itemsPerPage} 
-                onChange={handleItemsPerPageChange}
-                className="items-per-page-select"
-              >
-                <option value="8">8</option>
-                <option value="16">16</option>
-                <option value="24">24</option>
-                <option value="32">32</option>
-                <option value="48">48</option>
-              </select>
-              <span> por página</span>
-            </div>
-          </div>
-
-          <div className="selected-clients-list">
+    <div className="clients-page"> 
+      <Header username={username} currentPage="selected-clients" />      
+      <main className="clients-main"> 
+        <div className="clients-section"> 
+          <h1>Clientes Selecionados:</h1>
+          {/* Use a mesma classe clients-list com a lógica condicional */}
+          <div className={`clients-list ${hasManyCards ? 'many-cards' : ''}`}>
             {paginatedItems.length === 0 ? (
               <div className="empty-state">
                 <p>Nenhum cliente selecionado</p>
               </div>
             ) : (
               paginatedItems.map(client => (
-                <div key={client.id} className="selected-client-card">
+                <div key={client.id} className="client-card"> 
                   <div className="client-info">
                     <h3>{client.name}</h3>
                     <p>Salário: R$ {client.salary.toLocaleString()}</p>
                     <p>Empresa: R$ {client.companyValuation.toLocaleString()}</p>
                   </div>
-                  <div className="client-actions-selected">
-                    <button
-                      onClick={() => onUnselectClient(client.id)}
-                      className="unselect-btn"
-                      title="Remover da seleção"
-                    >
-                      -
-                    </button>
+                  <div className="client-actions-selected"> 
+                    <img src={RemoveSelected} className='remove-selected-btn' onClick={() => onUnselectClient(client.id)} alt="Botão de remoção de cliente selecionado" />
                   </div>
                 </div>
               ))
@@ -94,13 +62,9 @@ export const SelectedClients: React.FC<SelectedClientsProps> = ({
             <>
               <div className="clear-section">
                 <button onClick={onClearSelected} className="add-btn">
-                  Limpar Selecionados
+                  Limpar Clientes Selecionados
                 </button>
-              </div>
-              <Pagination
-                paginationInfo={paginationInfo}
-                onPageChange={setCurrentPage}
-              />
+              </div>              
             </>
           )}
         </div>
