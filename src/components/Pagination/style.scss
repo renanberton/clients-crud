@@ -2,40 +2,105 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   margin-top: 2rem;
   flex-wrap: wrap;
 
   @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.25rem;
   }
 }
 
 .pagination-btn {
-  padding: 0.75rem 1.5rem;
-  background: #007bff;
-  color: white;
-  border: none;
+  padding: 0.5rem 0.75rem;
+  background: #f8f9fa;
+  color: #EC6724;
+  border: 1px solid #dee2e6;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.9rem;
+  font-weight: 500;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover:not(:disabled) {
-    background: #0056b3;
+    background: #EC6724;
+    color: white;
+    border-color: #EC6724;
   }
 
   &:disabled {
-    background: #6c757d;
+    background: #e9ecef;
+    color: #6c757d;
     cursor: not-allowed;
+    border-color: #dee2e6;
   }
 
   @media (max-width: 768px) {
-    width: 100%;
+    min-width: 36px;
+    height: 36px;
+    padding: 0.4rem 0.6rem;
   }
 }
 
-.pagination-info {
-  color: #666;
+.pagination-numbers {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.pagination-number {
+  padding: 0.5rem 0.75rem;
+  background: #f8f9fa;
+  color: #495057;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  cursor: pointer;
   font-size: 0.9rem;
+  font-weight: 500;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover:not(.active) {
+    background: #e9ecef;
+    border-color: #adb5bd;
+  }
+
+  &.active {
+    background: #EC6724;
+    color: white;
+    border-color: #EC6724;
+  }
+
+  @media (max-width: 768px) {
+    min-width: 36px;
+    height: 36px;
+    padding: 0.4rem 0.6rem;
+  }
+}
+
+.pagination-ellipsis {
+  padding: 0.5rem 0.25rem;
+  color: #6c757d;
+  font-size: 0.9rem;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 768px) {
+    min-width: 36px;
+    height: 36px;
+  }
+}
+
+.pagination-prev,
+.pagination-next {
+  font-weight: bold;
 }
