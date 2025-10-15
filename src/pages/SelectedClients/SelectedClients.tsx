@@ -36,7 +36,6 @@ export const SelectedClients: React.FC<SelectedClientsProps> = ({
       <main className="clients-main"> 
         <div className="clients-section"> 
           <h1>Clientes Selecionados:</h1>
-          {/* Use a mesma classe clients-list com a lógica condicional */}
           <div className={`clients-list ${hasManyCards ? 'many-cards' : ''}`}>
             {paginatedItems.length === 0 ? (
               <div className="empty-state">
