@@ -93,7 +93,7 @@ export const SelectedClients: React.FC<SelectedClientsProps> = ({
           {selectedClients.length > 0 && (
             <>
               <div className="clear-section">
-                <button onClick={onClearSelected} className="clear-btn">
+                <button onClick={onClearSelected} className="add-btn">
                   Limpar Selecionados
                 </button>
               </div>
