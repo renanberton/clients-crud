@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import type { Client } from '../../types/Client';
-import { Pagination } from '../../components/Pagination/Pagination';
 import { paginate } from '../../utils/pagination';
 import { Header } from '../../components/Header/Header';
 import './style.scss';
@@ -19,10 +18,10 @@ export const SelectedClients: React.FC<SelectedClientsProps> = ({
   onUnselectClient,
   onClearSelected,
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(16);
+  const [currentPage] = useState(1);
+  const [itemsPerPage] = useState(16);
 
-  const { paginatedItems, paginationInfo } = paginate(
+  const { paginatedItems } = paginate(
     selectedClients,
     currentPage,
     itemsPerPage
