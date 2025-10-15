@@ -37,11 +37,6 @@ export const Clients: React.FC<ClientsProps> = ({
     itemsPerPage
   );
 
-  const handleItemsPerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setItemsPerPage(Number(e.target.value));
-    setCurrentPage(1); // Reset para primeira página quando mudar o número de itens
-  };
-
   const handleDeleteClick = (client: Client) => {
     setClientToDelete(client);
   };
@@ -57,6 +52,13 @@ export const Clients: React.FC<ClientsProps> = ({
     setClientToDelete(null);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);    
+    const validatedValue = Math.min(Math.max(value, 0), 100);
+    setItemsPerPage(validatedValue);
+    setCurrentPage(1);
+  };
+
   return (
     <div className="clients-page">
      <Header username={username} currentPage="clients" />
@@ -70,23 +72,18 @@ export const Clients: React.FC<ClientsProps> = ({
               </p>
             </div>
             <div className="items-per-page-selector">
-              <label htmlFor="itemsPerPage">Exibir: </label>
-              <select 
+              <label htmlFor="itemsPerPage">Clientes por Página: </label>
+              <input
                 id="itemsPerPage"
-                value={itemsPerPage} 
-                onChange={handleItemsPerPageChange}
-                className="items-per-page-select"
-              >
-                <option value="8">8</option>
-                <option value="16">16</option>
-                <option value="24">24</option>
-                <option value="32">32</option>
-                <option value="48">48</option>
-              </select>
-              <span> por página</span>
+                type="number"
+                min="1"
+                max="100"
+                value={itemsPerPage}
+                onChange={handleInputChange}  // ← Nova função
+                className="items-per-page-input"
+              />
             </div>
           </div>
-
           <div className="clients-list">
             {paginatedItems.length === 0 ? (
               <div className="empty-state">
@@ -142,8 +139,6 @@ export const Clients: React.FC<ClientsProps> = ({
           )}
         </div>
       </main>
-
-      {/* Modal de confirmação de exclusão */}
       {clientToDelete && (
         <DeleteConfirmationModal
           clientName={clientToDelete.name}

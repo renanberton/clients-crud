@@ -266,7 +266,6 @@ header {
     font-size: 16px;  
     font-weight: normal;
     font-style: 400;
-    margin-bottom: 18px;
     text-align: center; 
 
     p {
@@ -280,13 +279,51 @@ header {
 }
 
 .items-per-page-selector {
+
+  label {
     justify-content: space-between;
     font-family: "Inter", sans-serif;
     font-size: 16px;  
     font-weight: normal;
     font-style: 400;
-    margin-bottom: 18px;
     text-align: center;
+    width: 170px;
+  }
+
+  input {
+    width: 50px;
+    height: 25px;
+  }
+}
+
+.items-per-page-input {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background: white;
+  color: #495057;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+  width: 70px;
+  text-align: center;
+  
+  // Remove setinhas no Chrome, Safari, Edge, Opera
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  // Remove setinhas no Firefox
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
+  
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
 }
 
 // Estados de Loading e Error
