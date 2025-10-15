@@ -169,13 +169,20 @@ header {
   max-width: 1200px;
   height: auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
   margin: 0 auto;
-}
 
+  &.many-cards {
+    justify-content: space-between;
+  }
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+}
 .list-controls {
     width: 100%;
     height: auto;

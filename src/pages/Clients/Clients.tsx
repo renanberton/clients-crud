@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import type { Client } from '../../types/Client';
 import { Pagination } from '../../components/Pagination/Pagination';
 import { paginate } from '../../utils/pagination';
 import { DeleteConfirmationModal } from '../../components/DeleteConfirmationModal/DeleteConfirmationModal';
+import { ClientFormModal } from '../../components/ClientFormModal/ClientFormModal';
 import './style.scss';
 import Add from '../../assets/add.png';
 import Edit from '../../assets/edit.png';
@@ -17,6 +17,7 @@ interface ClientsProps {
   onEditClient: (client: Client) => void;
   onDeleteClient: (id: string) => void;
   onSelectClient: (id: string) => void;
+  onAddClient: (client: Omit<Client, 'id'>) => void;
 }
 
 export const Clients: React.FC<ClientsProps> = ({
@@ -25,17 +26,22 @@ export const Clients: React.FC<ClientsProps> = ({
   onEditClient,
   onDeleteClient,
   onSelectClient,
+  onAddClient,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(16); // Padrão de 16 cards
+  const [itemsPerPage, setItemsPerPage] = useState(16);
   const [clientToDelete, setClientToDelete] = useState<Client | null>(null);
-  const navigate = useNavigate();
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingClient, setEditingClient] = useState<Client | null>(null);
 
   const { paginatedItems, paginationInfo } = paginate(
     clients,
     currentPage,
     itemsPerPage
   );
+
+  const hasManyCards = paginatedItems.length >= 4;
 
   const handleDeleteClick = (client: Client) => {
     setClientToDelete(client);
@@ -59,9 +65,42 @@ export const Clients: React.FC<ClientsProps> = ({
     setCurrentPage(1);
   };
 
+  const handleAddClick = () => {
+    setShowAddModal(true);
+  };
+
+  const handleEditClick = (client: Client) => {
+    setEditingClient(client);
+    setShowEditModal(true);
+  };
+
+  const handleAddClient = (clientData: Omit<Client, 'id'>) => {
+    onAddClient(clientData);
+    setShowAddModal(false);
+  };
+
+ const handleEditClient = (clientData: Omit<Client, 'id'>) => {
+  if (editingClient) {   
+    const updatedClient: Client = {
+      ...clientData,
+      id: editingClient.id,
+      selected: editingClient.selected 
+    };
+    onEditClient(updatedClient);
+    setShowEditModal(false);
+    setEditingClient(null);
+  }
+};
+
+  const handleCloseModals = () => {
+    setShowAddModal(false);
+    setShowEditModal(false);
+    setEditingClient(null);
+  };
+
   return (
     <div className="clients-page">
-     <Header username={username} currentPage="clients" />
+      <Header username={username} currentPage="clients" />
       <main className="clients-main">
         <div className="clients-section">
           <div className="list-controls">
@@ -79,15 +118,22 @@ export const Clients: React.FC<ClientsProps> = ({
                 min="1"
                 max="100"
                 value={itemsPerPage}
-                onChange={handleInputChange}  // ← Nova função
+                onChange={handleInputChange}
                 className="items-per-page-input"
               />
             </div>
           </div>
-          <div className="clients-list">
+
+          <div className={`clients-list ${hasManyCards ? 'many-cards' : ''}`}>
             {paginatedItems.length === 0 ? (
               <div className="empty-state">
                 <p>Nenhum cliente cadastrado</p>
+                <button 
+                  onClick={handleAddClick}
+                  className="add-btn-first"
+                >
+                  Criar Primeiro Cliente
+                </button>
               </div>
             ) : (
               paginatedItems.map(client => (
@@ -108,10 +154,7 @@ export const Clients: React.FC<ClientsProps> = ({
                       </button>
                     )}
                     <button
-                      onClick={() => {
-                        onEditClient(client);
-                        navigate('/edit-client');
-                      }}
+                      onClick={() => handleEditClick(client)}
                       className="edit-btn"
                     >
                       <img src={Edit} alt="Editar" />
@@ -126,9 +169,14 @@ export const Clients: React.FC<ClientsProps> = ({
                 </div>
               ))
             )}
-              <Link to="/add-client" className="add-btn">
-              Criar Cliente
-            </Link>
+            {paginatedItems.length > 0 && (
+              <button 
+                onClick={handleAddClick}
+                className="add-btn"
+              >
+                Criar Cliente
+              </button>
+            )}
           </div>
 
           {clients.length > 0 && (
@@ -139,11 +187,30 @@ export const Clients: React.FC<ClientsProps> = ({
           )}
         </div>
       </main>
+
+      {/* Modais */}
       {clientToDelete && (
         <DeleteConfirmationModal
           clientName={clientToDelete.name}
           onConfirm={handleConfirmDelete}
           onCancel={handleCancelDelete}
+        />
+      )}
+
+      {showAddModal && (
+        <ClientFormModal
+          mode="add"
+          onSave={handleAddClient}
+          onCancel={handleCloseModals}
+        />
+      )}
+
+      {showEditModal && editingClient && (
+        <ClientFormModal
+          mode="edit"
+          client={editingClient}
+          onSave={handleEditClient}
+          onCancel={handleCloseModals}
         />
       )}
     </div>
