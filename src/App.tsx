@@ -2,15 +2,13 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import { Clients } from './pages/Clients/Clients';
 import { SelectedClients } from './pages/SelectedClients/SelectedClients';
-import { ClientForm } from './components/ClientForm/ClientForm';
 import { useClients } from './hooks/useClients';
 import type { Client } from './types/Client';
 import './App.css';
 import { useState } from 'react';
 
 function App() {
-  const [username, setUsername] = useState('');
-  const [editingClient, setEditingClient] = useState<Client | null>(null);
+  const [username, setUsername] = useState(''); 
   
   const {
     clients,
@@ -31,19 +29,14 @@ function App() {
     addClient(clientData);
   };
 
-  const handleEditClient = (clientData: Omit<Client, 'id'>) => {
-    if (editingClient) {
-      updateClient(editingClient.id, clientData);
-      setEditingClient(null);
-    }
-  };
-
-  const handleEditClick = (client: Client) => {
-    setEditingClient(client);
-  };
-
-  const handleCancelForm = () => {
-    setEditingClient(null);
+  // CORREÇÃO: Mudar para aceitar Client completo
+  const handleEditClient = (client: Client) => {
+    updateClient(client.id, {
+      name: client.name,
+      salary: client.salary,
+      companyValuation: client.companyValuation,
+      selected: client.selected
+    });
   };
 
   return (
@@ -64,9 +57,10 @@ function App() {
                 username={username}
                 clients={clients}
                 selectedClients={selectedClients}
-                onEditClient={handleEditClick}
+                onEditClient={handleEditClient}  // ← Agora está correto
                 onDeleteClient={deleteClient}
                 onSelectClient={selectClient}
+                onAddClient={handleAddClient}
               />
             ) : (
               <Navigate to="/" replace />
@@ -86,37 +80,6 @@ function App() {
                 />
             ) : (
               <Navigate to="/" replace />
-            )
-          } 
-        />
-        
-        <Route 
-          path="/add-client" 
-          element={
-            username ? (
-              <ClientForm
-                onSubmit={handleAddClient}
-                onCancel={handleCancelForm}
-                isEditing={false}
-              />
-            ) : (
-              <Navigate to="/" replace />
-            )
-          } 
-        />
-        
-        <Route 
-          path="/edit-client" 
-          element={
-            username && editingClient ? (
-              <ClientForm
-                client={editingClient}
-                onSubmit={handleEditClient}
-                onCancel={handleCancelForm}
-                isEditing={true}
-              />
-            ) : (
-              <Navigate to="/clients" replace />
             )
           } 
         />
