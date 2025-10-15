@@ -29,6 +29,13 @@ header {
     font-weight: 400;
     font-style: normal;
     color: #000000;
+    transition: color 0.2s ease;
+   
+    &.active {
+      color: #EC6724; 
+      font-weight: 600; 
+      text-decoration: underline;
+    }
   }
   
   @media (max-width: 768px) {
