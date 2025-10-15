@@ -1,5 +1,6 @@
 import type { Client } from '../types/Client';
 
+// Já está correto!
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://boasorte.teddybackoffice.com.br';
 
 interface ApiUser {
@@ -56,12 +57,12 @@ export const apiService = {
 
       if (responseData.clients && Array.isArray(responseData.clients)) {
         usersArray = responseData.clients;
-        console.log('✅ DADOS ENCONTRADOS EM responseData.clients');
+        console.log('DADOS ENCONTRADOS EM responseData.clients');
       } else if (Array.isArray(responseData)) {
         usersArray = responseData;
-        console.log('✅ DADOS ENCONTRADOS COMO ARRAY DIRETO');
+        console.log('DADOS ENCONTRADOS COMO ARRAY DIRETO');
       } else {
-        console.warn('⚠️ ESTRUTURA DESCONHECIDA:', responseData);
+        console.warn(' ESTRUTURA DESCONHECIDA:', responseData);
         return [];
       }
 
@@ -69,14 +70,14 @@ export const apiService = {
       return usersArray.map(apiUserToClient);
 
     } catch (error) {
-      console.error('❌ Erro ao buscar usuários:', error);
+      console.error('Erro ao buscar usuários:', error);
       throw error;
     }
   },
 
   async updateUser(id: string, updates: Partial<Client>): Promise<Client> {
     try {
-      console.log('🔄 UPDATE USER - ID:', id, 'Updates:', updates);
+      console.log(' UPDATE USER - ID:', id, 'Updates:', updates);
       
       const response = await fetch(`${API_BASE_URL}/users/${id}`, {
         method: 'PATCH',
@@ -89,7 +90,7 @@ export const apiService = {
       }
 
       const responseData = await response.json();
-      console.log('✅ UPDATE USER - Sucesso:', responseData);
+      console.log(' UPDATE USER - Sucesso:', responseData);
       
       let updatedApiUser: ApiUser;
       
@@ -106,7 +107,7 @@ export const apiService = {
         selected: updates.selected !== undefined ? updates.selected : updatedApiUser.selected
       });
     } catch (error) {
-      console.error('❌ Erro ao atualizar usuário:', error);
+      console.error('Erro ao atualizar usuário:', error);
       throw error;
     }
   },
