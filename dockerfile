@@ -1,18 +1,21 @@
-# Etapa 1: Build do React/Vite
-FROM node:18-alpine AS build
+FROM node:18-alpine
+
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+# Copy package files
+COPY package*.json ./
 RUN npm ci
+
+# Copy source code
 COPY . .
+
+# Build the app
 RUN npm run build
 
-# Etapa 2: Servir com Nginx
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Configuração SPA: qualquer rota aponta para index.html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Install http-server instead of serve
+RUN npm install -g http-server
 
 EXPOSE 3000
-CMD ["nginx", "-g", "daemon off;"]
+
+# Use http-server
+CMD ["http-server", "dist", "-p", "3000", "-a", "0.0.0.0"]
