@@ -37,36 +37,27 @@ export const apiService = {
   async getUsers(page: number = 1, limit: number = 50): Promise<Client[]> {
     try {
       const url = `${API_BASE_URL}/users?page=${page}&limit=${limit}`;
-      console.log('🔍 FETCHING FROM:', url);
-      
       const response = await fetch(url, {
         method: 'GET',
         headers: getHeaders(),
       });
 
-      console.log('🔍 RESPONSE STATUS:', response.status);
-      
       if (!response.ok) {
         throw new Error(`Erro ao buscar usuários: ${response.status}`);
       }
 
       const responseData = await response.json();
-      console.log('🔍 RESPONSE DATA:', responseData);
-
       let usersArray: ApiUser[] = [];
 
       if (responseData.clients && Array.isArray(responseData.clients)) {
         usersArray = responseData.clients;
-        console.log('DADOS ENCONTRADOS EM responseData.clients');
       } else if (Array.isArray(responseData)) {
         usersArray = responseData;
-        console.log('DADOS ENCONTRADOS COMO ARRAY DIRETO');
       } else {
-        console.warn(' ESTRUTURA DESCONHECIDA:', responseData);
+        console.warn('ESTRUTURA DESCONHECIDA:', responseData);
         return [];
       }
 
-      console.log('🔍 USERS ARRAY ENCONTRADO:', usersArray.length, 'usuários');
       return usersArray.map(apiUserToClient);
 
     } catch (error) {
@@ -77,8 +68,6 @@ export const apiService = {
 
   async updateUser(id: string, updates: Partial<Client>): Promise<Client> {
     try {
-      console.log(' UPDATE USER - ID:', id, 'Updates:', updates);
-      
       const response = await fetch(`${API_BASE_URL}/users/${id}`, {
         method: 'PATCH',
         headers: getHeaders(),
@@ -90,8 +79,6 @@ export const apiService = {
       }
 
       const responseData = await response.json();
-      console.log(' UPDATE USER - Sucesso:', responseData);
-      
       let updatedApiUser: ApiUser;
       
       if (responseData.client) {

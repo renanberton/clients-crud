@@ -22,7 +22,6 @@ export const ClientFormModal: React.FC<ClientFormModalProps> = ({
   useEffect(() => {
     if (mode === 'edit' && client) {
       setName(client.name);
-      // Formata os valores para o padrão monetário
       setSalary(
         client.salary.toLocaleString('pt-BR', {
           style: 'currency',
@@ -36,7 +35,6 @@ export const ClientFormModal: React.FC<ClientFormModalProps> = ({
         })
       );
     } else {
-      // Limpa os campos no modo add
       setName('');
       setSalary('');
       setCompanyValuation('');
@@ -46,7 +44,6 @@ export const ClientFormModal: React.FC<ClientFormModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Converte os valores formatados de volta para número
     const salaryValue = parseFloat(
       salary.replace('R$', '').replace('.', '').replace(',', '.').trim()
     );
@@ -64,12 +61,10 @@ export const ClientFormModal: React.FC<ClientFormModalProps> = ({
   };
 
   const formatCurrency = (value: string): string => {
-    // Remove tudo que não é número
     const digits = value.replace(/\D/g, '');
     
     if (digits === '') return '';
     
-    // Converte para número e formata como moeda
     const number = parseInt(digits) / 100;
     return number.toLocaleString('pt-BR', {
       style: 'currency',
@@ -80,7 +75,6 @@ export const ClientFormModal: React.FC<ClientFormModalProps> = ({
   const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     
-    // Permite backspace e delete
     if (value.length < salary.length) {
       setSalary(value);
       return;
@@ -93,12 +87,10 @@ export const ClientFormModal: React.FC<ClientFormModalProps> = ({
   const handleCompanyValuationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     
-    // Permite backspace e delete
     if (value.length < companyValuation.length) {
       setCompanyValuation(value);
       return;
-    }
-    
+    }    
     const formattedValue = formatCurrency(value);
     setCompanyValuation(formattedValue);
   };
@@ -118,8 +110,7 @@ export const ClientFormModal: React.FC<ClientFormModalProps> = ({
               type="text"
               placeholder="Digite o nome"
               value={name}
-              onChange={(e) => {
-                // Permite apenas letras, espaços e acentos
+              onChange={(e) => {                
                 const value = e.target.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '');
                 setName(value);
               }}

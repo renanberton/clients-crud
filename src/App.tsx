@@ -29,7 +29,6 @@ function App() {
     addClient(clientData);
   };
 
-  // CORREÇÃO: Mudar para aceitar Client completo
   const handleEditClient = (client: Client) => {
     updateClient(client.id, {
       name: client.name,
@@ -57,7 +56,7 @@ function App() {
                 username={username}
                 clients={clients}
                 selectedClients={selectedClients}
-                onEditClient={handleEditClient}  // ← Agora está correto
+                onEditClient={handleEditClient}  
                 onDeleteClient={deleteClient}
                 onSelectClient={selectClient}
                 onAddClient={handleAddClient}

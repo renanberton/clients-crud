@@ -10,13 +10,11 @@ interface ClientFormProps {
   isEditing?: boolean;
 }
 
-// Mude de export default para export named
 export const ClientForm: React.FC<ClientFormProps> = ({
   client,
   onSubmit,
   isEditing = false
 }) => {
-  // ... resto do código permanece igual
   const [name, setName] = useState('');
   const [salary, setSalary] = useState('');
   const [companyValuation, setCompanyValuation] = useState('');

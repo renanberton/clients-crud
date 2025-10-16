@@ -34,8 +34,6 @@ export const Clients: React.FC<ClientsProps> = ({
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
-  
-  // Estados de erro e loading
   const [apiError, setApiError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -47,17 +45,14 @@ export const Clients: React.FC<ClientsProps> = ({
 
   const hasManyCards = paginatedItems.length >= 4;
 
- // Função para tratar erros
   const handleApiError = (error: unknown) => {
     console.error('API Error:', error);
     
-    // Verifica se é um erro de rede
     if (error instanceof TypeError) {
       setApiError('Erro de conexão. Verifique sua internet e tente novamente.');
       return;
     }
     
-    // Verifica se é um erro da API com estrutura conhecida
     if (error && typeof error === 'object' && 'response' in error) {
       const apiError = error as { response?: { status?: number } };
       const status = apiError.response?.status;
@@ -161,8 +156,6 @@ export const Clients: React.FC<ClientsProps> = ({
   return (
     <div className="clients-page">
       <Header username={username} currentPage="clients" />
-      
-      {/* Mensagem de Erro */}
       {apiError && (
         <div className="error-banner">
           <div className="error-content">
@@ -177,7 +170,6 @@ export const Clients: React.FC<ClientsProps> = ({
         </div>
       )}
 
-      {/* Loading Overlay */}
       {loading && (
         <div className="loading-overlay">
           <div className="loading-spinner">Carregando...</div>
@@ -271,7 +263,6 @@ export const Clients: React.FC<ClientsProps> = ({
         </div>
       </main>
 
-      {/* Modais */}
       {clientToDelete && (
         <DeleteConfirmationModal
           clientName={clientToDelete.name}
