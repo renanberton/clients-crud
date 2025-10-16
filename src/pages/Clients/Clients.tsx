@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { Client } from '../../types/Client';
 import { Pagination } from '../../components/Pagination/Pagination';
 import { paginate } from '../../utils/pagination';
 import { DeleteConfirmationModal } from '../../components/DeleteConfirmationModal/DeleteConfirmationModal';
 import { ClientFormModal } from '../../components/ClientFormModal/ClientFormModal';
-import './style.scss';
 import Add from '../../assets/add.png';
 import Edit from '../../assets/edit.png';
 import Remove from '../../assets/remove.png';
 import { Header } from '../../components/Header/Header';
+import { useSeo } from '../../hooks/useSeo';
+import './style.scss';
 
 interface ClientsProps {
   username: string;
@@ -43,9 +44,10 @@ export const Clients: React.FC<ClientsProps> = ({
     itemsPerPage
   );
 
-  useEffect(() => {
-    document.title = 'Página de Clientes - Clients Crud';
-  }, []);
+     useSeo(
+        'Página de Clientes - Clients Crud',
+        'Gerencie sua base de clientes:  Visualize, edite e remova-os.'
+      );
 
   const hasManyCards = paginatedItems.length >= 4;
 

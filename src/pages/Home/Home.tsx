@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSeo } from '../../hooks/useSeo';
 import './style.scss';
 
 interface HomeProps {
@@ -10,9 +11,10 @@ export const Home: React.FC<HomeProps> = ({ onUsernameSubmit }) => {
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    document.title = 'Página Inicial - Clients Crud';
-  }, []);
+   useSeo(
+      'Página Inicial - Clients Crud',
+      'Seja bem vindo ao Sistema de Clientes!!.'
+    );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

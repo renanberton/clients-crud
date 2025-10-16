@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import type { Client } from '../../types/Client';
 import { paginate } from '../../utils/pagination';
 import { Header } from '../../components/Header/Header';
-import './style.scss';
 import RemoveSelected from '../../assets/remove-selected.png';
+import { useSeo } from '../../hooks/useSeo';
+import './style.scss';
 
 interface SelectedClientsProps {
   username: string;
@@ -27,9 +28,10 @@ export const SelectedClients: React.FC<SelectedClientsProps> = ({
     itemsPerPage
   );
 
-  useEffect(() => {
-      document.title = 'Página de Clientes Selecionados - Clients Crud';
-    }, []);
+ useSeo(
+    'Página de Clientes Selecionados - Clients Crud',
+    'Gerencie sua base de clientes seelecionados:  Visualize, edite e remova-os.'
+  );
   
   const hasManyCards = paginatedItems.length >= 4;
 
