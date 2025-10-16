@@ -1,73 +1,80 @@
-# React + TypeScript + Vite
+# CRUD Clients - React + TypeScript
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sistema de gerenciamento de clientes com operações completas de CRUD (Create, Read, Update, Delete), desenvolvido em React com TypeScript e Vite.
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Cadastro e gerenciamento** de clientes
+- **Interface responsiva** para desktop e mobile  
+- **Paginação inteligente** com navegação numérica
+- **Formulários com validação** e máscaras monetárias
+- **Modais** para adicionar, editar e confirmar exclusões
+- **Tratamento de erros** para diferentes cenários de API
 
-## React Compiler
+## Tecnologias Necessárias para executar o projeto
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Para execução local:**
+- Node.js (versão 18 ou superior)
+- npm ou yarn
 
-## Expanding the ESLint configuration
+**Para execução com Docker:**
+- Docker (versão 20 ou superior)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Como Executar
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Opção 1: Execução Local
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+**1. Clone o repositório:**
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+git clone [url-do-repositorio]
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**2. Entre no diretório do projeto:**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+cd crud-clients
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**3. Intale as Dependências:**
+
+npm install
+
+**4. Execute em modo desenvolvimento:**
+
+npm run dev
+
+**5. Acesse a aplicação em:**
+
+http://localhost:5173
+
+
+### Opção 2: Execução com Docker
+
+**1. Clone o Repositório:**
+
+git clone [url-do-repositorio]
+
+**2. Entre no diretório do projeto:**
+
+cd crud-clients
+
+**3. Construa a Imagem Docker:**
+
+docker build -t crud-clients .
+
+**4. Execute o Container:**
+
+docker run -p 3000:80 crud-clients
+
+**5. Acesse a aplicação em:**
+
+http://localhost:3000
+
+
+### Escolha o método que preferir! 
+
+Ambos fornecem a mesma funcionalidade completa da aplicação.
+
+Caso prefira visualizar o projeto em produção, basta acessar: 
+
+https://clients-crud-dun.vercel.app/
+
+
+## O espirito nobre engrandece o menor dos homens.
