@@ -22,20 +22,85 @@ export const ClientFormModal: React.FC<ClientFormModalProps> = ({
   useEffect(() => {
     if (mode === 'edit' && client) {
       setName(client.name);
-      setSalary(client.salary.toString());
-      setCompanyValuation(client.companyValuation.toString());
+      // Formata os valores para o padrão monetário
+      setSalary(
+        client.salary.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        })
+      );
+      setCompanyValuation(
+        client.companyValuation.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        })
+      );
+    } else {
+      // Limpa os campos no modo add
+      setName('');
+      setSalary('');
+      setCompanyValuation('');
     }
   }, [mode, client]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Converte os valores formatados de volta para número
+    const salaryValue = parseFloat(
+      salary.replace('R$', '').replace('.', '').replace(',', '.').trim()
+    );
+    
+    const companyValue = parseFloat(
+      companyValuation.replace('R$', '').replace('.', '').replace(',', '.').trim()
+    );
+
     onSave({
-      name,
-      salary: Number(salary),
-      companyValuation: Number(companyValuation),
-      selected: false,
+      name: name.trim(),
+      salary: salaryValue,
+      companyValuation: companyValue,
+      selected: client?.selected || false,
     });
+  };
+
+  const formatCurrency = (value: string): string => {
+    // Remove tudo que não é número
+    const digits = value.replace(/\D/g, '');
+    
+    if (digits === '') return '';
+    
+    // Converte para número e formata como moeda
+    const number = parseInt(digits) / 100;
+    return number.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    });
+  };
+
+  const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    
+    // Permite backspace e delete
+    if (value.length < salary.length) {
+      setSalary(value);
+      return;
+    }
+    
+    const formattedValue = formatCurrency(value);
+    setSalary(formattedValue);
+  };
+
+  const handleCompanyValuationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    
+    // Permite backspace e delete
+    if (value.length < companyValuation.length) {
+      setCompanyValuation(value);
+      return;
+    }
+    
+    const formattedValue = formatCurrency(value);
+    setCompanyValuation(formattedValue);
   };
 
   return (
@@ -53,18 +118,23 @@ export const ClientFormModal: React.FC<ClientFormModalProps> = ({
               type="text"
               placeholder="Digite o nome"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                // Permite apenas letras, espaços e acentos
+                const value = e.target.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '');
+                setName(value);
+              }}
               className="form-input"
               required
+              maxLength={50}
             />
           </div>
 
           <div className="form-group">
             <input
-              type="number"
+              type="text"
               placeholder="Digite o salário"
               value={salary}
-              onChange={(e) => setSalary(e.target.value)}
+              onChange={handleSalaryChange}
               className="form-input"
               required
             />
@@ -72,10 +142,10 @@ export const ClientFormModal: React.FC<ClientFormModalProps> = ({
 
           <div className="form-group">
             <input
-              type="number"
+              type="text"
               placeholder="Valor da Empresa"
               value={companyValuation}
-              onChange={(e) => setCompanyValuation(e.target.value)}
+              onChange={handleCompanyValuationChange}
               className="form-input"
               required
             />
