@@ -114,7 +114,6 @@ header {
   @media (max-width: 768px) {
     width: 100%;
     margin: 0 auto;    
-    padding: 1rem;
   }
 }
 
@@ -214,10 +213,21 @@ header {
   text-align: center;
   padding: 3rem;
   color: #666;
+  
+   @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 0;
+      gap: 20px;
+      margin: 0 auto;
+  }
 
   p {
     margin: 0;
-    font-size: 1.1rem;
+    font-size: 1.1rem;    
   }
 }
 
@@ -454,5 +464,111 @@ button:disabled {
 
   &:hover {
     background: #d45a1f;
+  }
+}
+
+// Tratamento de Erros
+.error-banner {
+  background: #ffebee;
+  border: 1px solid #f44336;
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1rem auto;
+  max-width: 1200px;
+  
+  .error-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    span {
+      color: #c62828;
+      flex: 1;
+    }
+  }
+  
+  .error-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #c62828;
+    
+    &:hover {
+      color: #b71c1c;
+    }
+  }
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  
+  .loading-spinner {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    font-weight: bold;
+  }
+}
+
+// Tratamento de Erros
+.error-banner {
+  background: #ffebee;
+  border: 1px solid #f44336;
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1rem auto;
+  max-width: 1200px;
+  
+  .error-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    span {
+      color: #c62828;
+      flex: 1;
+    }
+  }
+  
+  .error-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #c62828;
+    
+    &:hover {
+      color: #b71c1c;
+    }
+  }
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  
+  .loading-spinner {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    font-weight: bold;
   }
 }

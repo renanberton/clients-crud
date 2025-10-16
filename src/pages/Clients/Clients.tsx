@@ -34,6 +34,10 @@ export const Clients: React.FC<ClientsProps> = ({
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
+  
+  // Estados de erro e loading
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const { paginatedItems, paginationInfo } = paginate(
     clients,
@@ -43,14 +47,52 @@ export const Clients: React.FC<ClientsProps> = ({
 
   const hasManyCards = paginatedItems.length >= 4;
 
+ // Função para tratar erros
+  const handleApiError = (error: unknown) => {
+    console.error('API Error:', error);
+    
+    // Verifica se é um erro de rede
+    if (error instanceof TypeError) {
+      setApiError('Erro de conexão. Verifique sua internet e tente novamente.');
+      return;
+    }
+    
+    // Verifica se é um erro da API com estrutura conhecida
+    if (error && typeof error === 'object' && 'response' in error) {
+      const apiError = error as { response?: { status?: number } };
+      const status = apiError.response?.status;
+      
+      if (status === 404) {
+        setApiError('Serviço não encontrado.');
+      } else if (status === 500) {
+        setApiError('Erro interno do servidor. Tente novamente mais tarde.');
+      } else if (status === 400) {
+        setApiError('Dados inválidos. Verifique as informações.');
+      } else {
+        setApiError('Erro na comunicação com o servidor.');
+      }
+    } else {
+      setApiError('Erro inesperado. Tente novamente.');
+    }
+  };
+
   const handleDeleteClick = (client: Client) => {
     setClientToDelete(client);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (clientToDelete) {
-      onDeleteClient(clientToDelete.id);
-      setClientToDelete(null);
+      setLoading(true);
+      setApiError(null);
+      
+      try {
+        await onDeleteClient(clientToDelete.id);
+        setClientToDelete(null);
+      } catch (error) {
+        handleApiError(error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -74,23 +116,41 @@ export const Clients: React.FC<ClientsProps> = ({
     setShowEditModal(true);
   };
 
-  const handleAddClient = (clientData: Omit<Client, 'id'>) => {
-    onAddClient(clientData);
-    setShowAddModal(false);
+  const handleAddClient = async (clientData: Omit<Client, 'id'>) => {
+    setLoading(true);
+    setApiError(null);
+    
+    try {
+      await onAddClient(clientData);
+      setShowAddModal(false);
+    } catch (error) {
+      handleApiError(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
- const handleEditClient = (clientData: Omit<Client, 'id'>) => {
-  if (editingClient) {   
-    const updatedClient: Client = {
-      ...clientData,
-      id: editingClient.id,
-      selected: editingClient.selected 
-    };
-    onEditClient(updatedClient);
-    setShowEditModal(false);
-    setEditingClient(null);
-  }
-};
+  const handleEditClient = async (clientData: Omit<Client, 'id'>) => {
+    if (editingClient) {
+      setLoading(true);
+      setApiError(null);
+      
+      try {
+        const updatedClient: Client = {
+          ...clientData,
+          id: editingClient.id,
+          selected: editingClient.selected 
+        };
+        await onEditClient(updatedClient);
+        setShowEditModal(false);
+        setEditingClient(null);
+      } catch (error) {
+        handleApiError(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
 
   const handleCloseModals = () => {
     setShowAddModal(false);
@@ -101,6 +161,29 @@ export const Clients: React.FC<ClientsProps> = ({
   return (
     <div className="clients-page">
       <Header username={username} currentPage="clients" />
+      
+      {/* Mensagem de Erro */}
+      {apiError && (
+        <div className="error-banner">
+          <div className="error-content">
+            <span>⚠️ {apiError}</span>
+            <button 
+              onClick={() => setApiError(null)}
+              className="error-close"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Loading Overlay */}
+      {loading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner">Carregando...</div>
+        </div>
+      )}
+
       <main className="clients-main">
         <div className="clients-section">
           <div className="list-controls">
@@ -130,7 +213,7 @@ export const Clients: React.FC<ClientsProps> = ({
                 <p>Nenhum cliente cadastrado</p>
                 <button 
                   onClick={handleAddClick}
-                  className="add-btn-first"
+                  className="add-btn"
                 >
                   Criar Primeiro Cliente
                 </button>
