@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Client } from '../../types/Client';
 import { Pagination } from '../../components/Pagination/Pagination';
 import { paginate } from '../../utils/pagination';
@@ -42,6 +42,10 @@ export const Clients: React.FC<ClientsProps> = ({
     currentPage,
     itemsPerPage
   );
+
+  useEffect(() => {
+    document.title = 'Página de Clientes - Clients Crud';
+  }, []);
 
   const hasManyCards = paginatedItems.length >= 4;
 

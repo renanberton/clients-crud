@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Client } from '../../types/Client';
 import { paginate } from '../../utils/pagination';
 import { Header } from '../../components/Header/Header';
@@ -26,6 +26,10 @@ export const SelectedClients: React.FC<SelectedClientsProps> = ({
     currentPage,
     itemsPerPage
   );
+
+  useEffect(() => {
+      document.title = 'Página de Clientes Selecionados - Clients Crud';
+    }, []);
   
   const hasManyCards = paginatedItems.length >= 4;
 
