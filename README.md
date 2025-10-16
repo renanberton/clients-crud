@@ -26,11 +26,11 @@ Sistema de gerenciamento de clientes com operações completas de CRUD (Create, 
 
 **1. Clone o repositório:**
 
-git clone [url-do-repositorio]
+git clone https://github.com/renanberton/clients-crud.git
 
 **2. Entre no diretório do projeto:**
 
-cd crud-clients
+cd clients-crud
 
 **3. Intale as Dependências:**
 
@@ -49,19 +49,19 @@ http://localhost:5173
 
 **1. Clone o Repositório:**
 
-git clone [url-do-repositorio]
+git clone https://github.com/renanberton/clients-crud.git
 
 **2. Entre no diretório do projeto:**
 
-cd crud-clients
+cd clients-crud
 
 **3. Construa a Imagem Docker:**
 
-docker build -t crud-clients .
+docker build -t clients-crud .
 
 **4. Execute o Container:**
 
-docker run -p 3000:80 crud-clients
+docker run -p 3000:3000 clients-crud
 
 **5. Acesse a aplicação em:**
 
