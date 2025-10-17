@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 header {
   width: 100%;
   display: flex;
@@ -6,14 +8,45 @@ header {
   gap: 20px; 
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1); 
 
-  h2 {
-    color: #333;
-    margin: 0;
+  .container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
   }
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 
   @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;    
+    gap: 2rem;
+    flex-direction: column-reverse;
+  }
+}
+
+/* Hamburguer - Visível em TODOS os dispositivos */
+.hamburger-btn {
+  display: flex;
+  flex-direction: column;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  gap: 4px;
+  
+  span {
+    width: 25px;
+    height: 3px;
+    background: #333;
+    transition: 0.3s;
+  }
+  
+  &:hover span {
+    background: #EC6724;
   }
 }
 
@@ -22,24 +55,182 @@ header {
   gap: 33px; 
 
   a {
-    text-decoration: none ;   
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;   
     font-family: "Inter", sans-serif;
     font-size: 16px;  
     font-weight: 400;
     font-style: normal;
     color: #000000;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
    
     &.active {
       color: #EC6724; 
       text-decoration: underline;
+      
+      .nav-icon {
+        filter: invert(48%) sepia(79%) saturate(1583%) hue-rotate(350deg) brightness(95%) contrast(91%);
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.header-right {
+  font-family: "Inter", sans-serif;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+/* SIDEBAR - Visível em TODOS os dispositivos quando aberto */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  
+  &.sidebar-overlay--open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -320px;
+  width: 300px;
+  height: 100vh;
+  background: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  transition: left 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  border-top-right-radius: 8px;
+  
+  &.sidebar--open {
+    left: 0;
+    border-top-right-radius: 8px;
+  }
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;   
+  width: 100%;
+  height: 128px;
+  border-bottom: 1px solid #eee;
+  background: #363636;
+  position: relative;
+  border-top-right-radius: 8px;
+}
+
+.sidebar-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  position: absolute;
+  bottom: -1rem; 
+  right: -1rem; 
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.sidebar-close-icon {
+  width: 56px;
+  height: 56px;
+}
+
+.sidebar-close-icon {
+  width: 68px;
+  height: 68px;
+}
+
+.sidebar-user {
+  padding: 1rem 1.5rem;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  color: #333;
+  border-bottom: 1px solid #eee;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  color: #000000;
+  transition: all 0.2s ease;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  
+  &:hover {
+    background: #f8f9fa;
+    color: #EC6724;
+    
+    .sidebar-nav-icon {
+      filter: invert(48%) sepia(79%) saturate(1583%) hue-rotate(350deg) brightness(95%) contrast(91%);
     }
   }
   
-  @media (max-width: 768px) {
-    width: 100%;    
-    text-align: center;
-    justify-content: center;
-    gap: 20px;
+  &.sidebar-nav-item--active {
+    background: #fff3e0;
+    color: #EC6724;
+    font-weight: 500;
+    
+    .sidebar-nav-icon {
+      filter: invert(48%) sepia(79%) saturate(1583%) hue-rotate(350deg) brightness(95%) contrast(91%);
+    }
   }
+}
+
+/* Ícones do Navbar */
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  transition: filter 0.2s ease;
+}
+
+/* Ícones do Sidebar */
+.sidebar-nav-icon {
+  width: 24px;
+  height: 24px;
+  transition: filter 0.2s ease;
 }
