@@ -48,8 +48,15 @@
 }
 
 .pagination-numbers {
+  width: 100%;
   display: flex;
-  gap: 0.25rem;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+
+  @media (max-width: 768px) {
+    gap: 1.2rem;
+  }
 }
 
 .pagination-number {
