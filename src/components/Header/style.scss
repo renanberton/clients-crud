@@ -28,7 +28,6 @@ header {
   }
 }
 
-/* Hamburguer - Visível em TODOS os dispositivos */
 .hamburger-btn {
   display: flex;
   flex-direction: column;
@@ -89,7 +88,6 @@ header {
   }
 }
 
-/* SIDEBAR - Visível em TODOS os dispositivos quando aberto */
 .sidebar-overlay {
   position: fixed;
   top: 0;
@@ -221,14 +219,12 @@ header {
   }
 }
 
-/* Ícones do Navbar */
 .nav-icon {
   width: 20px;
   height: 20px;
   transition: filter 0.2s ease;
 }
 
-/* Ícones do Sidebar */
 .sidebar-nav-icon {
   width: 24px;
   height: 24px;
